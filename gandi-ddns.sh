@@ -5,9 +5,8 @@ API_KEY=
 ZONE_FQDN=
 ZONE_RECS=
 ZONE_TTL=3600
-ZONE_UUID=
 
-if [ -z "$ZONE_FQDN" -o -z "$ZONE_RECS" -o -z "$ZONE_TTL" -o -z "$ZONE_UUID" ]
+if [ -z "$ZONE_FQDN" -o -z "$ZONE_RECS" -o -z "$ZONE_TTL" ]
 then
 	echo "Zone parameters not set, aborting."
 	#exit 1

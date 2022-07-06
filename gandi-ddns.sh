@@ -5,25 +5,39 @@ API_KEY=
 ZONE_FQDN=
 ZONE_RECS=
 ZONE_TTL=3600
-
 if [ -z "$ZONE_FQDN" -o -z "$ZONE_RECS" -o -z "$ZONE_TTL" ]
 then
 	echo "Zone parameters not set, aborting."
-	#exit 1
+	exit 1
 fi
 
-LOC_IP=""
-LOC_LOG=""
-touch $LOC_LOG
+LOC_IP="ip.txt"
+LOC_LOG="log.txt"
+if [ -z "$LOC_IP" -o -z "$LOC_LOG" ]
+then
+	echo "No location for tmp files set, aborting."
+	exit 1
+fi
+touch $LOC_IP
 touch $LOC_LOG
 
-IPV4_PUBLIC="$(curl https://ipecho.net/plain)"
 IPV4_PUBLIC_OLD="$(cat $LOC_IP)"
+IPV4_PUBLIC="$(curl ipconfig.org)"
+if [ $? -ne 0 ]
+then
+	echo "[$(date)] Error connecting to the server [ERROR]" >> $LOC_LOG
+	exit 1
+fi
 
+if [ "$IPV4_PUBLIC" != "$(curl https://ipecho.net/plain)" ]
+then
+	echo "[$(date)] Public IP redudant check failed [ERROR]" >> $LOC_LOG
+	exit 1
+fi
 if [ -z $IPV4_PUBLIC ]
 then
-        echo "[$(date)] Public IP could not be determined - abort [ERROR]" >> $LOC_LOG
-        exit 0
+        echo "[$(date)] Public IP could not be determined [ERROR]" >> $LOC_LOG
+        exit 1
 fi
 if [ $IPV4_PUBLIC = $IPV4_PUBLIC_OLD ]
 then

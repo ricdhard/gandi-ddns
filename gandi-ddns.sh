@@ -31,7 +31,7 @@ fi
 
 if [ "$IPV4_PUBLIC" != "$(curl https://ipecho.net/plain)" ]
 then
-	echo "[$(date)] Public IP redudant check failed [ERROR]" >> $LOC_LOG
+	echo "[$(date)] Public IP redundant check failed [ERROR]" >> $LOC_LOG
 	exit 1
 fi
 if [ -z $IPV4_PUBLIC ]
